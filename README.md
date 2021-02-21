@@ -1,4 +1,4 @@
-# frontend
+# GifuZenkyoApp
 
 ## Build Setup
 

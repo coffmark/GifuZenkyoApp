@@ -5,8 +5,8 @@ export default {
   ssr: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - frontend',
-    title: 'frontend',
+    titleTemplate: '%s - GifuZenkyoApp',
+    title: 'GifuZenkyoApp',
     htmlAttrs: {
       lang: 'en'
     },

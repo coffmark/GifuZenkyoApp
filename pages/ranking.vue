@@ -1,16 +1,13 @@
 <template>
   <v-container>
     <v-col>
-      <h3>
-        ただ今作成中です。
-      </h3>
+      <h2>
+        Oops! Something went wrong.
+      </h2>
       <br>
       <v-divider></v-divider>
-      <h3>
-        エンジニアとして助けていただける助っ人を探しています。<br>
-        お問い合わせフォームからご連絡いただければ、幸いです。<br>
-        1名様限定<br>
-      </h3>
+      <h4>
+      </h4>
       <v-divider></v-divider>
     </v-col>
   </v-container>
