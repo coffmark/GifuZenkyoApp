@@ -1,14 +1,9 @@
 <template>
   <v-container>
-    <h1>
-      詳細
-    </h1>
-
-    <v-card color="blue lighten-4">
+    <v-card color="teal lighten-1">
 
       <div v-if="isCourseFetched" align="center">
-        <div class="ma-4">
-          <h3>講義名</h3>
+        <div class="ma-4 tanuki">
           <h1>
             {{ course.lecture_title}}
           </h1>
