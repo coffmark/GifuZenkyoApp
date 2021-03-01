@@ -1,12 +1,12 @@
 {
-  "name": "GifuZenkyoApp",
+  "name": "gifu-zenkyo-app",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts build",
-    "start": "nuxt-ts start",
-    "generate": "nuxt-ts generate"
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.1",
