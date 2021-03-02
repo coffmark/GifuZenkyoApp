@@ -5,19 +5,18 @@
     </h1>
 
     <v-card color="blue lighten-4">
-
       <div v-if="isCourseFetched" align="center">
         <div class="ma-4">
           <h3>講義名</h3>
           <h1>
-            {{ course.lecture_title}}
+            {{ course.lecture_title }}
           </h1>
         </div>
 
         <div class="ma-4">
           <h3>開講期間</h3>
           <h2>
-            {{ course.lecture_season}}
+            {{ course.lecture_season }}
           </h2>
         </div>
 
@@ -29,7 +28,14 @@
         </div>
 
         <div class="ma-4">
-          <v-btn :href="getCourseURL(course.lecture_code)" text large rounded color="gray" outlined>
+          <v-btn
+            :href="getCourseURL(course.lecture_code)"
+            text
+            large
+            rounded
+            color="gray"
+            outlined
+          >
             シラバス URL
           </v-btn>
         </div>
@@ -38,7 +44,6 @@
       <v-spacer></v-spacer>
     </v-card>
     <v-spacer></v-spacer>
-
 
     <div align="center">
       <h3>みんなのコメント</h3>
@@ -55,7 +60,7 @@
     <v-spacer></v-spacer>
 
     <v-textarea
-      v-model = 'message'
+      v-model="message"
       label="感想 [ex: 面白かった] [ex: 先生がずっと話している講義だった] [ex: 〇〇を改善してほしい]"
       auto-grow
       outlined
@@ -72,8 +77,6 @@
       <p>{{ checkLoginMessage }}</p>
       <h2>{{ statusMessage }}</h2>
     </div>
-
-
   </v-container>
 </template>
 
@@ -89,66 +92,80 @@ export default {
       commentData: null,
       isCommentFetched: false,
       statusMessage: "",
-    }
+    };
   },
   methods: {
     // シラバスのURLを作成
     getCourseURL: function(id) {
-      return "https://alss-portal.gifu-u.ac.jp/campusweb/slbssbdr.do?value(risyunen)=2020&value(semekikn)=1&value(kougicd)=" + id + "&value(crclumcd)="
+      return (
+        "https://alss-portal.gifu-u.ac.jp/campusweb/slbssbdr.do?value(risyunen)=2020&value(semekikn)=1&value(kougicd)=" +
+        id +
+        "&value(crclumcd)="
+      );
     },
     // ログインしているかチェックする
-    checkLogin: function(){
-      if (this.$store.state.isLogin){
-        this.checkLoginMessage = '🤩ログインしています！'
-      }else{
-        this.checkLoginMessage = 'ログインしていません！'
+    checkLogin: function() {
+      if (this.$store.state.isLogin) {
+        this.checkLoginMessage = "🤩ログインしています！";
+      } else {
+        this.checkLoginMessage = "ログインしていません！";
       }
     },
     // コメントをpostする
-    postComments: function(comment ,course){
-      if (comment == ""){
-        this.statusMessage = "コメントを入力してください🥺"
-        setTimeout(this.brankStatusMessage, 3000)
-      }else if (!this.$store.state.isLogin) {
-        this.statusMessage = "ログインしてください👀"
-        setTimeout(this.brankStatusMessage, 3000)
-      }else{
-        let poster = this.$store.state.displayName
-        axios.post("http://localhost:8000/api/v1/courses/create/comments", {
-          course_id: course._id,
-          comment: comment,
-          poster: poster,
-          serverTimeStamp: Date.now(),
-        })
-        this.statusMessage = "Thank you! コメントを投稿できました！🎉"
+    postComments: function(comment, course) {
+      if (comment == "") {
+        this.statusMessage = "コメントを入力してください🥺";
+        setTimeout(this.brankStatusMessage, 3000);
+      } else if (!this.$store.state.isLogin) {
+        this.statusMessage = "ログインしてください👀";
+        setTimeout(this.brankStatusMessage, 3000);
+      } else {
+        let poster = this.$store.state.displayName;
+        //gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/early
+        https: axios.post(
+          "https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/comments/create",
+          {
+            course_id: course._id,
+            comment: comment,
+            poster: poster,
+            serverTimeStamp: Date.now(),
+          }
+        );
+        this.statusMessage = "Thank you! コメントを投稿できました！🎉";
         // statusMessageを空白にする
-        setTimeout(this.brankStatusMessage, 3000)
+        setTimeout(this.brankStatusMessage, 3000);
         // 入力コメントをnullにする
-        this.message = ""
+        this.message = "";
       }
     },
     //statusMessageを空白にする
-    brankStatusMessage: function(){
-      this.statusMessage = ""
+    brankStatusMessage: function() {
+      this.statusMessage = "";
     },
   },
   mounted() {
     // HTTP request
-    axios.get('http://localhost:8000/api/v1/courses/latter/' + this.$route.params.id )
-      .then(res => {
-        console.log('Success to Fetch API')
-        console.log(res.data)
-        this.course = res.data
-        this.isCourseFetched = true
+    axios
+      .get(
+        "https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/latter/" + this.$route.params.id
+      )
+      .then((res) => {
+        console.log("Success to Fetch API");
+        console.log(res.data);
+        this.course = res.data;
+        this.isCourseFetched = true;
       }),
-      axios.get('http://localhost:8000/api/v1/courses/' + this.$route.params.id + '/comments')
-        .then(res => {
-          console.log('Fetch コメント')
-          console.log(res.data)
-          this.commentData = res.data
-          console.log(this.commentData)
-          this.isCommentFetched = true
-        })
-  }
-}
+      axios
+        .get(
+          "https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/comments/" + this.$route.params.id
+        )
+        .then((res) => {
+          console.log("Fetch コメント");
+          console.log(res.data);
+          this.commentData = res.data;
+          console.log(this.commentData);
+          this.isCommentFetched = true;
+        });
+  },
+};
 </script>
