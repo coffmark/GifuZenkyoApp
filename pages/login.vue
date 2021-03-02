@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div align="center" class="ma-5">
-      <h1>メールアドレス　ログイン</h1>
+      <h1>LOGIN</h1>  
     </div>
 
     <div align="center" class="text-center">
@@ -20,101 +20,111 @@
 </template>
 
 <script>
-  import firebase, { firestore } from '../src/plugins/firebaseConfig'
-  import "firebase/firestore"
+import firebase, { firestore } from "../src/plugins/firebaseConfig";
+import "firebase/firestore";
 
-  export default {
-    data() {
-      return {
-        email: ""
-      }
-    },
-    methods: {
-      // ** Google認証を行うときに呼び出す関数
-      googleAuth() {
-        const auth = () => {
-          return new Promise((resolve, reject) => {
-            const authUI = new firebase.auth.GoogleAuthProvider();
-            console.log('auth')
-            firebase
-              .auth()
-              .signInWithPopup(authUI)
-              .then(result => {
-                console.log(result)
-                resolve(result)
-              })
-              .catch(error => {
-                // Handle Errors here.
-                const errorCode = error.code
-                const errorMessage = error.message
-                const email = error.email
-                const credential = error.credential
-              })
-          })
-        }
-
-        //**認証後のユーザー情報を取得してオブジェクト化 */
-        const getAccountData = result => {
-          return new Promise((resolve, reject) => {
-            let userObject = {}
-            let user = result.user
-            userObject.token = result.credential.accessToken
-            userObject.refreshToken = user.refreshToken
-            userObject.uid = user.uid
-            userObject.displayName = user.displayName
-            userObject.photoURL = user.photoURL
-            userObject.email = user.email
-            userObject.isNewUser = result.additionalUserInfo.isNewUser
-            userObject.providerId = result.additionalUserInfo.providerId
-            console.log(userObject)
-            resolve(userObject)
-          })
-        }
-
-        // ** 実行する
-        Promise.resolve()
-          .then(this.setPersistence)
-          .then(auth)
-          .then(getAccountData)
-          .then(userObject => this.writeCloudStore(userObject))
-          .then(userObject => this.updateLogin(userObject.displayName, userObject.photoURL))
-      },
-      // ** 認証状態を明示的にセットする
-      setPersistence() {
-        return new Promise(((resolve, reject) => {
+export default {
+  data() {
+    return {
+      email: "",
+    };
+  },
+  methods: {
+    // ** Google認証を行うときに呼び出す関数
+    googleAuth() {
+      const auth = () => {
+        return new Promise((resolve, reject) => {
+          const authUI = new firebase.auth.GoogleAuthProvider();
+          console.log("auth");
           firebase
             .auth()
-            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            .then(result => {
-              resolve()
+            .signInWithPopup(authUI)
+            .then((result) => {
+              console.log(result);
+              resolve(result);
             })
-        }))
-      },
-      //** CloudStoreに書き込む */
-      writeCloudStore(userObject){
-        return new Promise((resolve, reject) => {
-          var userRef = firestore.collection("v1").doc("users").collection("user")
+            .catch((error) => {
+              // Handle Errors here.
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              const email = error.email;
+              const credential = error.credential;
+            });
+        });
+      };
 
-          userRef.doc(userObject.uid).set({
-            userId: userObject.uid,
-            displayName: userObject.displayName,
-            profileImageURL: userObject.photoURL,
-          }, {merge: true})
-          .then(result => {
-            resolve(userObject)
+      //**認証後のユーザー情報を取得してオブジェクト化 */
+      const getAccountData = (result) => {
+        return new Promise((resolve, reject) => {
+          let userObject = {};
+          let user = result.user;
+          userObject.token = result.credential.accessToken;
+          userObject.refreshToken = user.refreshToken;
+          userObject.uid = user.uid;
+          userObject.displayName = user.displayName;
+          userObject.photoURL = user.photoURL;
+          userObject.email = user.email;
+          userObject.isNewUser = result.additionalUserInfo.isNewUser;
+          userObject.providerId = result.additionalUserInfo.providerId;
+          console.log(userObject);
+          resolve(userObject);
+        });
+      };
+
+      // ** 実行する
+      Promise.resolve()
+        .then(this.setPersistence)
+        .then(auth)
+        .then(getAccountData)
+        .then((userObject) => this.writeCloudStore(userObject))
+        .then((userObject) =>
+          this.updateLogin(userObject.displayName, userObject.photoURL)
+        );
+    },
+    // ** 認証状態を明示的にセットする
+    setPersistence() {
+      return new Promise((resolve, reject) => {
+        firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+          .then((result) => {
+            resolve();
+          });
+      });
+    },
+    //** CloudStoreに書き込む */
+    writeCloudStore(userObject) {
+      return new Promise((resolve, reject) => {
+        var userRef = firestore
+          .collection("v1")
+          .doc("users")
+          .collection("user");
+
+        userRef
+          .doc(userObject.uid)
+          .set(
+            {
+              userId: userObject.uid,
+              displayName: userObject.displayName,
+              profileImageURL: userObject.photoURL,
+            },
+            { merge: true }
+          )
+          .then((result) => {
+            resolve(userObject);
             // ログイン後、ホームページに移動
-            this.moveHomepage()
-          })
-        })
-      },
-      // Webストレージのログイン情報をアップデートする
-      updateLogin(displayName) {
-        this.$store.commit('updateLogin', displayName)
-      },
-      // ログイン後、ホームページへ移動
-      moveHomepage(){
-        this.$router.replace('/')
-      }
-    }
-  }
+            this.moveHomepage();
+          });
+      });
+    },
+    // Webストレージのログイン情報をアップデートする
+    updateLogin(displayName) {
+      this.$store.commit("updateLogin", displayName);
+    },
+    // ログイン後、ホームページへ移動
+    moveHomepage() {
+      this.$router.replace("/");
+    },
+  },
+};
 </script>

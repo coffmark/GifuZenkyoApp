@@ -129,7 +129,7 @@
     },
     mounted() {
       // HTTP request
-      axios.get('http://localhost:8000/api/v1/courses/early/' + this.$route.params.id )
+      axios.get('https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/early' + this.$route.params.id )
       .then(res => {
         console.log('Success to Fetch API')
         console.log(res.data)

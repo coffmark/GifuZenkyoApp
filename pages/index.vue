@@ -96,12 +96,12 @@
       }
     },
     mounted() {
-      axios.get('http://localhost:8000/api/v1/courses/early')
+      axios.get('https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/early')
         .then(response => {
         console.log('Success to Fetch API')
         this.earlyCourses = response.data
       }),
-      axios.get('http://localhost:8000/api/v1/courses/latter')
+      axios.get('https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/latter')
         .then(response => {
           console.log('Success to Fetch API')
           this.latterCourses = response.data

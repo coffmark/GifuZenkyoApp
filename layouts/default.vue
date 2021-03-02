@@ -1,13 +1,13 @@
 <template>
   <v-app>
-    <v-app-bar
-      fixed
-      app
-      color="light-gray"
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
-      <nuxt-link to="/" style="text-decoration: none" color='black'>
-        <v-toolbar-title v-text="title"/>
+    <v-app-bar fixed app color="light-gray">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <nuxt-link to="/" style="text-decoration:none">
+        <v-toolbar-title
+          v-text="title"
+          style="text-decoration: none"
+          color="black"
+        />
       </nuxt-link>
       <v-spacer />
 
@@ -29,7 +29,7 @@
         <nuxt-link to="/account" style="text-decoration:none">
           <v-btn plain>
             <h1>👤</h1>
-            <h3>{{this.$store.state.displayName}}</h3>
+            <h3>{{ this.$store.state.displayName }}</h3>
           </v-btn>
         </nuxt-link>
       </div>
@@ -49,10 +49,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
+    <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
       <span>岐阜大学　シラバスより</span>
       <v-spacer></v-spacer>
@@ -64,13 +61,11 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        title: '岐阜大学　全共科目.com'
-      }
-    }
-  }
+export default {
+  data() {
+    return {
+      title: "岐阜大学　全共科目.com",
+    };
+  },
+};
 </script>
-
-

@@ -2,12 +2,11 @@
   <v-container>
     <v-col>
       <h2>
-        Oops! Something went wrong.
+        作成中です。しばらくお待ちください。
       </h2>
-      <br>
+      <br />
       <v-divider></v-divider>
-      <h4>
-      </h4>
+      <h4></h4>
       <v-divider></v-divider>
     </v-col>
   </v-container>
