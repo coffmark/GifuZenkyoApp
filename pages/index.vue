@@ -96,7 +96,7 @@
       }
     },
     mounted() {
-      axios.get('https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/early')
+      axios.get('http://localhost:3000/api/early')
         .then(response => {
         console.log('Success to Fetch API')
         this.earlyCourses = response.data
