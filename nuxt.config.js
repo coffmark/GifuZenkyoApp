@@ -43,16 +43,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/proxy'
   ],
-  proxy:{
-    '/api/' : {
-      target: 'https://gifu-u-zenkyo-api.netlify.app/.netlify/functions/api/v1/',
-      pathRewrite: {
-        '^/api/' : '/'
-      }
-    }
-  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
